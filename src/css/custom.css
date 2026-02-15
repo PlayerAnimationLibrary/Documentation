@@ -15,7 +15,7 @@
   --ifm-color-primary-lightest: #1f0e73;
   --ifm-code-font-size: 90%;
 
-  --context-divier: #e2e2e3;
+  --content-divider: #e2e2e3;
 
   --ifm-color-warning-contrast-background: rgb(254, 243, 213);
   --ifm-code-border-radius: 0.55rem;
@@ -42,7 +42,7 @@ html[data-theme="dark"] {
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.45);
   --ifm-code-background: rgba(255, 255, 255, 0.08);
 
-  --content-divier: #2e2e32;
+  --content-divider: #2e2e32;
 }
 
 .menu__caret:before {
@@ -74,5 +74,5 @@ a.no-underline {
 h2 {
   margin: 48px 0 16px;
   padding-top: 24px;
-  border-top: 1px solid var(--context-divier);
+  border-top: 1px solid var(--content-divider);
 }

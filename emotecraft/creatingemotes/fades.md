@@ -1,5 +1,6 @@
 ---
-description: ""
+sidebar_position: 5
+description: "How to configure fade in and fade out for emote animations."
 ---
 
 # Fading in/out

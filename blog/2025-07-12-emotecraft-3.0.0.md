@@ -5,7 +5,7 @@ slug: 2025-07-12-emotecraft-300
 authors: [dima_dencep, zigythebird]
 ---
 
-> *No longer a April Fool's joke*
+> *No longer an April Fool's joke*
 
 <!-- truncate -->
 

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 4
-description: ""
+description: "Migration guide from PlayerAnimator to PlayerAnimationLibrary."
 ---
 
 # How to port from player animator

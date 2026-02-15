@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-description: ""
+description: "How to download and install Emotecraft on Fabric, NeoForge, and Paper."
 ---
 
 # Installing Emotecraft

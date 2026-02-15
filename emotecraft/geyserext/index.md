@@ -1,5 +1,5 @@
 ---
-description: ""
+description: "Geyser Extension for cross-edition emotes on Geyser servers."
 sidebar_position: 0
 ---
 
@@ -24,5 +24,5 @@ This extension is designed for:
 - A Java emotes source (e.g., an emotes mod/plugin on the Java backend)
 - Bedrock clients joining through Geyser
 
-Exact requirements depend on your server setup; see [Installation](/emotecraft/geyserext/installation.md).
+Exact requirements depend on your server setup; see [Installation](/emotecraft/geyserext/installation).
 

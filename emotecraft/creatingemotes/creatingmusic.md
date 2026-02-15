@@ -1,5 +1,6 @@
 ---
-description: ""
+sidebar_position: 3
+description: "How to create music for emotes using Note Block Studio."
 ---
 
 # Creating Music for Emotes

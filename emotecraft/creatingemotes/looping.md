@@ -1,5 +1,6 @@
 ---
-description: ""
+sidebar_position: 6
+description: "How to configure animation looping in Blockbench formats."
 ---
 
 # Looping (For Blockbench formats)

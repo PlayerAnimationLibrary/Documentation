@@ -1,5 +1,6 @@
 ---
-description: ""
+sidebar_position: 2
+description: "How to create emotes using Blockbench."
 ---
 
 # Creating Emotes With Blockbench

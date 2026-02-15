@@ -1,12 +1,13 @@
 ---
-description: ""
+sidebar_position: 4
+description: "How to add custom pivot points and bones to emotes."
 ---
 
 # Custom Pivot Points/Bones
 You can add custom bones to the Blockbench model AS LONG AS THEY ARE A CHILD OF THE BODY BONE.   
 For example you could add a hip bone that rotates all the bones except the legs around well... the hips.  
 But for this to work you have to register the new bone you have created by adding something like this to the animation JSON:
-```
+```json5
   "model": {
     "bone_name": {
       "pivot": [0, 12, 0]

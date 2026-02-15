@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-description: ""
+description: "How to download and install custom emotes for Emotecraft."
 ---
 
 # Custom Emotes

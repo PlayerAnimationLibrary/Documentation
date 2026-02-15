@@ -1,5 +1,6 @@
 ---
-description: ""
+sidebar_position: 1
+description: "How to create emotes using Blender rigs."
 ---
 
 # Creating Emotes With Blender

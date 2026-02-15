@@ -1,3 +1,7 @@
+---
+title: PlayerAnimationLibrary & Emotecraft Documentation
+---
+
 import Card from "../theme/Card.tsx";
 
 # PlayerAnimationLibrary & Emotecraft

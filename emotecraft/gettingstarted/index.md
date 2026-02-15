@@ -1,5 +1,5 @@
 ---
-description: ""
+description: "Installing Emotecraft and getting started."
 ---
 
 # Getting Started

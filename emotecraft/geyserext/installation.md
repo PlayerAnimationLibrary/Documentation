@@ -1,5 +1,5 @@
 ---
-description: ""
+description: "How to install the Emotecraft Geyser Extension."
 sidebar_position: 1
 ---
 

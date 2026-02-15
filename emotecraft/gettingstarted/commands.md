@@ -1,5 +1,6 @@
 ---
-description: ""
+sidebar_position: 4
+description: "Emotecraft client and server commands, and server permissions."
 ---
 
 # Commands
@@ -8,13 +9,13 @@ description: ""
 These commands are registered on the client and **are not sent to the server**.
 
 - `/emotes-client play <emote>` — play an emote
-- `/emotes-client stop` — stop an current emote
+- `/emotes-client stop` — stop the current emote
 
 ## Server commands
 These commands are registered on the server; you may need permissions to execute them.
 
 - `/emotes play <emote> <player> <forced>` — play an emote
-- `/emotes stop <player>` — stop an current player emote
+- `/emotes stop <player>` — stop the current player's emote
 - `/emotes reload` — reload emotes
 
 ## Server permissions

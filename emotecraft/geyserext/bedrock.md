@@ -1,5 +1,5 @@
 ---
-description: ""
+description: "Bedrock-specific limitations and workarounds for emotes."
 sidebar_position: 3
 ---
 
