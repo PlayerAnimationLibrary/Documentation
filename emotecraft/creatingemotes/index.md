@@ -18,7 +18,7 @@ Here's a part of an emote file with badges:
 ```json5
 {
     "name": "A super cool emote with badges",
-    "badges": [
+    "bages": [
         {
             "text": "a red badge with regular text",
             "color": "#ff0000"
