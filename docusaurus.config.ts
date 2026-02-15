@@ -62,6 +62,7 @@ const config: Config = {
   ],
   
   plugins: [
+    './plugins/maven-versions-plugin',
     [
       '@docusaurus/plugin-content-docs',
       {
