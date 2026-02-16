@@ -43,6 +43,9 @@ html[data-theme="dark"] {
   --ifm-code-background: rgba(255, 255, 255, 0.08);
 
   --content-divider: #2e2e32;
+
+  --prism-background-color: #282a36;
+  --prism-color: #f8f8f2;
 }
 
 .menu__caret:before {
