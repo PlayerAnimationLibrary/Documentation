@@ -13,7 +13,7 @@ function parseVersions(xml) {
   // Group by MC version and pick the last published (latest in XML order)
   const byMc = {};
   for (const version of versions) {
-    const mcMatch = version.match(/\+mc\.(.+)$/);
+    const mcMatch = version.match(/\+mc\.?(.+)$/);
     if (!mcMatch) continue;
     byMc[mcMatch[1]] = version;
   }
