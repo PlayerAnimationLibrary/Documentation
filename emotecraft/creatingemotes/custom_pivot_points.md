@@ -87,7 +87,7 @@ To add a model to a custom bone, include `texture` and `elements` fields alongsi
 
 ### Custom Emote Bones Editor
 
-Instead of manually writing the `texture` and `elements` fields, you can use the [Custom Emote Bones Editor](/ceb_editor.html) to attach existing Minecraft models (.json or .bbmodel) to bones in your animation.
+Instead of manually writing the `texture` and `elements` fields, you can use the [Custom Emote Bones Editor](pathname:///ceb_editor.html) to attach existing Minecraft models (.json or .bbmodel) to bones in your animation.
 
 The editor allows you to:
 1. Load your emote JSON
