@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Custom Emote Bones Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #141414;
+            color: #ccc;
+            font-family: 'DM Sans', 'Segoe UI', sans-serif;
+        }
+
+        /* Header */
+        .header {
+            border-bottom: 1px solid #222;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-icon {
+            width: 28px;
+            height: 28px;
+            background: #7c6f4a;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .header-title {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .header-sub {
+            font-size: 11px;
+            color: #555;
+            letter-spacing: 0.4px;
+        }
+
+        /* Main grid */
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 240px 1fr;
+            gap: 1px;
+            background: #1a1a1a;
+            min-height: calc(100vh - 61px);
+        }
+
+        .panel {
+            background: #141414;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-center {
+            background: #161616;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border-left: 1px solid #1e1e1e;
+            border-right: 1px solid #1e1e1e;
+        }
+
+        .section-label {
+            font-size: 11px;
+            color: #555;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Drop zone */
+        .dropzone {
+            border: 2px dashed #3a3a3a;
+            border-radius: 2px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.15s ease;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .dropzone:hover, .dropzone.dragover {
+            border-color: #7c6f4a;
+            background: rgba(124, 111, 74, 0.08);
+        }
+
+        .dropzone-icon {
+            font-size: 22px;
+            opacity: 0.5;
+        }
+
+        .dropzone-label {
+            font-size: 13px;
+            color: #888;
+            letter-spacing: 0.3px;
+        }
+
+        .dropzone-info {
+            font-size: 12px;
+            color: #7c6f4a;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Bone buttons */
+        .bone-btn {
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #333;
+            border-radius: 2px;
+            padding: 6px 12px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            transition: all 0.1s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .bone-btn:hover {
+            border-color: #555;
+        }
+
+        .bone-btn.active {
+            background: #7c6f4a;
+            color: #fff;
+            border-color: #7c6f4a;
+        }
+
+        .bone-info {
+            font-size: 11px;
+            color: #555;
+            padding: 8px;
+            background: rgba(124, 111, 74, 0.06);
+            border-radius: 2px;
+            border: 1px solid #2a2a2a;
+            line-height: 1.8;
+        }
+
+        .bone-info .label {
+            color: #777;
+        }
+
+        /* Texture mapping */
+        .tex-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border: 1px solid #3a2a2a;
+            border-radius: 2px;
+            background: rgba(255, 80, 80, 0.06);
+        }
+
+        .tex-row.mapped {
+            border-color: #3a3a2a;
+            background: rgba(124, 111, 74, 0.1);
+        }
+
+        .tex-key {
+            font-family: monospace;
+            font-size: 12px;
+            color: #7c6f4a;
+            min-width: 24px;
+        }
+
+        .tex-ref {
+            font-size: 12px;
+            color: #777;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tex-ok {
+            font-size: 11px;
+            color: #5a5;
+        }
+
+        .tex-add-btn {
+            background: #333;
+            color: #aaa;
+            border: 1px solid #444;
+            border-radius: 2px;
+            padding: 2px 8px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .tex-add-btn:hover {
+            background: #444;
+        }
+
+        /* Action buttons */
+        .btn-merge {
+            background: #2a2a2a;
+            color: #555;
+            border: none;
+            border-radius: 2px;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: not-allowed;
+            letter-spacing: 0.3px;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+
+        .btn-merge.ready {
+            background: #7c6f4a;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .btn-merge.ready:hover {
+            background: #8d7f56;
+        }
+
+        .btn-save {
+            background: transparent;
+            color: #7c6f4a;
+            border: 1px solid #7c6f4a;
+            border-radius: 2px;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            font-family: inherit;
+            display: none;
+        }
+
+        .btn-save:hover {
+            background: rgba(124, 111, 74, 0.1);
+        }
+
+        .btn-save.visible {
+            display: block;
+        }
+
+        .actions {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Error */
+        .error {
+            background: rgba(200, 60, 60, 0.1);
+            border: 1px solid #4a2a2a;
+            border-radius: 2px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #c88;
+            display: none;
+        }
+
+        .error.visible {
+            display: block;
+        }
+
+        /* Atlas preview */
+        .atlas-wrap {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-start;
+        }
+
+        .atlas-wrap.visible {
+            display: flex;
+        }
+
+        .atlas-checker {
+            background: repeating-conic-gradient(#222 0% 25%, #1a1a1a 0% 50%) 0 0 / 16px 16px;
+            padding: 1px;
+            border-radius: 2px;
+            border: 1px solid #333;
+            display: inline-block;
+        }
+
+        .atlas-checker img {
+            display: block;
+            image-rendering: pixelated;
+            max-width: 256px;
+            max-height: 256px;
+        }
+
+        /* JSON preview */
+        .json-pre {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            border-radius: 2px;
+            padding: 12px;
+            font-size: 11px;
+            color: #8a8a6a;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            overflow: auto;
+            max-height: 320px;
+            line-height: 1.5;
+            white-space: pre;
+            display: none;
+        }
+
+        .json-pre.visible {
+            display: block;
+        }
+
+        .placeholder {
+            color: #333;
+            font-size: 13px;
+            text-align: center;
+            padding: 40px 20px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 900px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-icon">⬡</div>
+    <div>
+        <div class="header-title">Custom Emote Bones Editor</div>
+        <div class="header-sub">Attach Minecraft models to bones · texture atlas builder</div>
+    </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+    <!-- Left panel: file inputs -->
+    <div class="panel">
+        <div>
+            <div class="section-label">Emote</div>
+            <div class="dropzone" id="cmm-drop">
+                <span class="dropzone-icon">{ }</span>
+                <span class="dropzone-label">Emote .json here or click</span>
+                <span class="dropzone-info" id="cmm-info"></span>
+                <input accept=".json" id="cmm-input" style="display:none" type="file">
+            </div>
+        </div>
+
+        <div>
+            <div class="section-label">Minecraft Model</div>
+            <div class="dropzone" id="mc-drop">
+                <span class="dropzone-icon">◧</span>
+                <span class="dropzone-label">Drop MC model .json or .bbmodel here</span>
+                <span class="dropzone-info" id="mc-info"></span>
+                <input accept=".json,.bbmodel" id="mc-input" style="display:none" type="file">
+            </div>
+        </div>
+
+        <div id="tex-mapping" style="display:none">
+            <div class="section-label" style="margin-bottom:12px">Texture mapping</div>
+            <div id="tex-rows"></div>
+        </div>
+    </div>
+
+    <!-- Center panel: bone selector -->
+    <div class="panel-center">
+        <div class="section-label">Target Bone</div>
+        <div id="bone-list"></div>
+        <div class="bone-info" id="bone-info" style="display:none"></div>
+
+        <div class="actions">
+            <button class="btn-merge" disabled id="btn-merge">▸ Merge &amp; Build Atlas</button>
+            <button class="btn-save" id="btn-save">↓ Save JSON</button>
+        </div>
+    </div>
+
+    <!-- Right panel: preview -->
+    <div class="panel" style="overflow:auto">
+        <div class="section-label">Output Preview</div>
+
+        <div class="error" id="error-box"></div>
+
+        <div class="atlas-wrap" id="atlas-wrap">
+            <div class="section-label" id="atlas-label">Atlas preview</div>
+            <div class="atlas-checker">
+                <img alt="Atlas" id="atlas-img" src="">
+            </div>
+        </div>
+
+        <div class="section-label" id="json-label" style="display:none">Result JSON</div>
+        <pre class="json-pre" id="json-pre"></pre>
+
+        <div class="placeholder" id="placeholder">
+            1. Load emote JSON<br>
+            2. Load Minecraft model (.json or .bbmodel)<br>
+            3. Map textures (auto for .bbmodel)<br>
+            4. Select target bone<br>
+            5. Merge &amp; Save
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // State
+    // ============================================================
+    let cmmData = null;
+    let cmmFilename = "";
+    let mcModel = null;           // normalized model (always has .textures, .elements, .texture_size)
+    let mcFilename = "";
+    let mcEmbeddedTextures = {};  // key → dataURL (from bbmodel)
+    let selectedBone = null;
+    let textureFiles = {};        // key → File
+    let resultData = null;
+
+    // ============================================================
+    // Atlas Builder
+    // ============================================================
+    class AtlasBuilder {
+        constructor() {
+            this.entries = new Map();
+            this.images = [];
+        }
+
+        addImage(name, img) {
+            if (this.entries.has(name)) return;
+            this.entries.set(name, {img, x: 0, y: 0, w: img.width, h: img.height});
+            this.images.push(name);
+        }
+
+        pack() {
+            let cursorX = 0, cursorY = 0, rowHeight = 0;
+            const maxWidth = 1024;
+
+            for (const name of this.images) {
+                const entry = this.entries.get(name);
+                if (cursorX + entry.w > maxWidth) {
+                    cursorY += rowHeight;
+                    cursorX = 0;
+                    rowHeight = 0;
+                }
+                entry.x = cursorX;
+                entry.y = cursorY;
+                cursorX += entry.w;
+                rowHeight = Math.max(rowHeight, entry.h);
+            }
+        }
+
+        getSize() {
+            let maxX = 1, maxY = 1;
+            for (const entry of this.entries.values()) {
+                maxX = Math.max(maxX, entry.x + entry.w);
+                maxY = Math.max(maxY, entry.y + entry.h);
+            }
+            return {width: maxX, height: maxY};
+        }
+
+        render() {
+            const {width, height} = this.getSize();
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.imageSmoothingEnabled = false;
+
+            for (const [name, entry] of this.entries) {
+                ctx.drawImage(entry.img, entry.x, entry.y);
+            }
+            return canvas;
+        }
+
+        toBase64() {
+            return this.render().toDataURL("image/png").split(",")[1];
+        }
+
+        toDataURL() {
+            return this.render().toDataURL("image/png");
+        }
+    }
+
+    // ============================================================
+    // Helpers
+    // ============================================================
+    function loadImageFromFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function loadImageFromBase64(b64) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = "data:image/png;base64," + b64;
+        });
+    }
+
+    function loadImageFromDataURL(dataURL) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = dataURL;
+        });
+    }
+
+    function readJSONFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    resolve(JSON.parse(e.target.result));
+                } catch (err) {
+                    reject(err);
+                }
+            };
+            reader.readAsText(file);
+        });
+    }
+
+    function downloadJSON(data, filename) {
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function extractBones(data) {
+        return data?.model ? Object.keys(data.model) : [];
+    }
+
+    // ============================================================
+    // Model format detection & normalization
+    // All UV normalized to pixel coords of source texture
+    // ============================================================
+
+    function isBBModel(data) {
+        return !!(data.meta && data.meta.format_version);
+    }
+
+    /**
+     * Normalize .bbmodel → unified format
+     * UV in bbmodel is already in pixel coords of resolution
+     */
+    function normalizeBBModel(data) {
+        const resolution = data.resolution || {width: 16, height: 16};
+
+        // Текстуры: массив → объект {id: ref}, плюс извлекаем embedded base64
+        const textures = {};
+        const embedded = {};
+
+        for (const tex of (data.textures || [])) {
+            const key = String(tex.id);
+            textures[key] = tex.folder ? `${tex.folder}/${tex.name}` : tex.name;
+            if (tex.source) {
+                embedded[key] = tex.source; // "data:image/png;base64,..."
+            }
+        }
+
+        // Элементы: texture из числа → строка "#key", UV уже в пикселях
+        const elements = (data.elements || [])
+            .filter((elem) => elem.type === "cube" || !elem.type)
+            .map((elem) => {
+                const newFaces = {};
+                for (const [dir, face] of Object.entries(elem.faces || {})) {
+                    const newFace = {};
+                    if (face.uv) newFace.uv = [...face.uv];
+                    if (face.texture !== undefined && face.texture !== null) {
+                        newFace.texture = "#" + String(face.texture);
+                    }
+                    if (face.tintindex !== undefined) newFace.tintindex = face.tintindex;
+                    if (face.rotation !== undefined) newFace.rotation = face.rotation;
+                    newFaces[dir] = newFace;
+                }
+
+                const result = {from: [...elem.from], to: [...elem.to], faces: newFaces};
+                if (elem.rotation) result.rotation = elem.rotation;
+                return result;
+            });
+
+        const model = {
+            textures,
+            elements,
+            texture_size: [resolution.width, resolution.height],
+        };
+
+        return {model, embeddedTextures: embedded};
+    }
+
+    /**
+     * Normalize Java JSON model
+     * UV in Java JSON is in 0..16 "MC units"; scale to pixel coords
+     */
+    function normalizeJavaModel(data) {
+        const textureSize = data.texture_size || [16, 16];
+        const scaleU = textureSize[0] / 16;
+        const scaleV = textureSize[1] / 16;
+
+        const elements = (data.elements || []).map((elem) => {
+            const newFaces = {};
+            for (const [dir, face] of Object.entries(elem.faces || {})) {
+                const newFace = Object.assign({}, face);
+                if (face.uv) {
+                    // Scale MC units → pixel coords
+                    newFace.uv = [
+                        face.uv[0] * scaleU,
+                        face.uv[1] * scaleV,
+                        face.uv[2] * scaleU,
+                        face.uv[3] * scaleV,
+                    ];
+                }
+                newFaces[dir] = newFace;
+            }
+            return Object.assign({}, elem, {faces: newFaces});
+        });
+
+        const model = Object.assign({}, data, {
+            elements,
+            texture_size: textureSize,
+        });
+
+        return {model, embeddedTextures: {}};
+    }
+
+    // ============================================================
+    // Extract textures actually used in elements
+    // ============================================================
+    function extractMcTextures(model) {
+        if (!model?.textures) return [];
+
+        // Собираем ключи текстур, реально используемых в элементах
+        const usedKeys = new Set();
+        for (const elem of (model.elements || [])) {
+            for (const face of Object.values(elem.faces || {})) {
+                if (face.texture) {
+                    usedKeys.add(face.texture.replace("#", ""));
+                }
+            }
+        }
+
+        return Object.entries(model.textures)
+            .filter(([key]) => usedKeys.has(key))
+            .map(([key, value]) => ({
+                key,
+                ref: value,
+                name: value.replace(/^.*[/\\]/, ""),
+            }));
+    }
+
+    function showError(msg) {
+        const el = document.getElementById("error-box");
+        el.textContent = msg;
+        el.classList.add("visible");
+    }
+
+    function clearError() {
+        document.getElementById("error-box").classList.remove("visible");
+    }
+
+    function updateMergeButton() {
+        const btn = document.getElementById("btn-merge");
+        const ready = cmmData && mcModel && selectedBone;
+        btn.disabled = !ready;
+        btn.classList.toggle("ready", !!ready);
+    }
+
+    // ============================================================
+    // Dropzone wiring
+    // ============================================================
+    function setupDropzone(dropId, inputId, handler) {
+        const drop = document.getElementById(dropId);
+        const input = document.getElementById(inputId);
+
+        drop.addEventListener("click", () => input.click());
+        drop.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            drop.classList.add("dragover");
+        });
+        drop.addEventListener("dragleave", () => drop.classList.remove("dragover"));
+        drop.addEventListener("drop", (e) => {
+            e.preventDefault();
+            drop.classList.remove("dragover");
+            if (e.dataTransfer.files[0]) handler(e.dataTransfer.files[0]);
+        });
+        input.addEventListener("change", (e) => {
+            if (e.target.files[0]) handler(e.target.files[0]);
+        });
+    }
+
+    // ============================================================
+    // CMM load
+    // ============================================================
+    async function handleCmmFile(file) {
+        clearError();
+        try {
+            cmmData = await readJSONFile(file);
+            cmmFilename = file.name;
+            selectedBone = null;
+            resultData = null;
+
+            const bones = extractBones(cmmData);
+            document.getElementById("cmm-info").textContent = `✓ ${file.name} · ${bones.length} bones`;
+
+            renderBoneList(bones);
+            clearOutput();
+            updateMergeButton();
+        } catch (err) {
+            showError("Failed to parse CMM JSON: " + err.message);
+        }
+    }
+
+    // ============================================================
+    // MC model load (auto-detect Java JSON vs bbmodel)
+    // ============================================================
+    async function handleMcFile(file) {
+        clearError();
+        try {
+            const raw = await readJSONFile(file);
+            mcFilename = file.name;
+            textureFiles = {};
+            mcEmbeddedTextures = {};
+            resultData = null;
+
+            let result;
+            if (isBBModel(raw)) {
+                result = normalizeBBModel(raw);
+                // Для bbmodel текстуры уже встроены — не нужно маппить вручную
+                mcEmbeddedTextures = result.embeddedTextures;
+            } else {
+                result = normalizeJavaModel(raw);
+            }
+
+            mcModel = result.model;
+
+            const elemCount = mcModel.elements?.length || 0;
+            const format = isBBModel(raw) ? "bbmodel" : "json";
+            const texCount = Object.keys(mcEmbeddedTextures).length;
+            let info = `✓ ${file.name} · ${elemCount} elements · ${format}`;
+            if (texCount) info += ` · ${texCount} embedded tex`;
+
+            document.getElementById("mc-info").textContent = info;
+
+            renderTexMapping();
+            clearOutput();
+            updateMergeButton();
+        } catch (err) {
+            showError("Failed to parse model: " + err.message);
+        }
+    }
+
+    // ============================================================
+    // Bone list rendering
+    // ============================================================
+    function renderBoneList(bones) {
+        const container = document.getElementById("bone-list");
+        container.innerHTML = "";
+
+        if (!bones.length) {
+            container.innerHTML = '<div style="color:#555;font-size:13px;padding:8px">No bones found</div>';
+            return;
+        }
+
+        bones.forEach((name) => {
+            const btn = document.createElement("button");
+            btn.className = "bone-btn";
+            btn.textContent = "◆ " + name;
+            btn.addEventListener("click", () => selectBone(name));
+            container.appendChild(btn);
+        });
+    }
+
+    function selectBone(name) {
+        selectedBone = name;
+
+        // Update button states
+        document.querySelectorAll(".bone-btn").forEach((btn) => {
+            btn.classList.toggle("active", btn.textContent === "◆ " + name);
+        });
+
+        // Show bone info
+        const infoEl = document.getElementById("bone-info");
+        const bone = cmmData.model[name];
+        if (bone) {
+            infoEl.style.display = "block";
+            infoEl.innerHTML =
+                `<div><span class="label">pivot:</span> [${(bone.pivot || []).join(", ")}]</div>` +
+                `<div><span class="label">elements:</span> ${(bone.elements || []).length}</div>` +
+                `<div><span class="label">has texture:</span> ${bone.texture ? "yes" : "no"}</div>`;
+        } else {
+            infoEl.style.display = "none";
+        }
+
+        updateMergeButton();
+    }
+
+    // ============================================================
+    // Texture mapping (auto-fills embedded textures from bbmodel)
+    // ============================================================
+    function renderTexMapping() {
+        const textures = extractMcTextures(mcModel);
+        const wrapper = document.getElementById("tex-mapping");
+        const rows = document.getElementById("tex-rows");
+
+        if (!textures.length) {
+            wrapper.style.display = "none";
+            return;
+        }
+
+        wrapper.style.display = "block";
+        rows.innerHTML = "";
+
+        textures.forEach(({key, ref}) => {
+            const hasEmbedded = !!mcEmbeddedTextures[key];
+            const hasFile = !!textureFiles[key];
+            const mapped = hasEmbedded || hasFile;
+
+            const row = document.createElement("div");
+            row.className = "tex-row" + (mapped ? " mapped" : "");
+
+            const keySpan = document.createElement("span");
+            keySpan.className = "tex-key";
+            keySpan.textContent = "#" + key;
+
+            const refSpan = document.createElement("span");
+            refSpan.className = "tex-ref";
+            refSpan.textContent = ref;
+
+            row.appendChild(keySpan);
+            row.appendChild(refSpan);
+
+            if (hasEmbedded) {
+                // Embedded из bbmodel — показываем превью и статус
+                const preview = document.createElement("img");
+                preview.src = mcEmbeddedTextures[key];
+                preview.style.cssText = "width:16px;height:16px;image-rendering:pixelated;border:1px solid #444;border-radius:1px;";
+                row.appendChild(preview);
+
+                const ok = document.createElement("span");
+                ok.className = "tex-ok";
+                ok.textContent = "✓ embedded";
+                row.appendChild(ok);
+            } else if (hasFile) {
+                const ok = document.createElement("span");
+                ok.className = "tex-ok";
+                ok.textContent = "✓ " + textureFiles[key].name;
+                row.appendChild(ok);
+            } else {
+                const btn = document.createElement("button");
+                btn.className = "tex-add-btn";
+                btn.textContent = "+ PNG";
+                btn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = ".png";
+                    input.addEventListener("change", (ev) => {
+                        if (ev.target.files[0]) {
+                            textureFiles[key] = ev.target.files[0];
+                            renderTexMapping();
+                        }
+                    });
+                    input.click();
+                });
+                row.appendChild(btn);
+            }
+
+            rows.appendChild(row);
+        });
+    }
+
+    // ============================================================
+    // Output
+    // ============================================================
+    function clearOutput() {
+        resultData = null;
+        document.getElementById("atlas-wrap").classList.remove("visible");
+        document.getElementById("json-pre").classList.remove("visible");
+        document.getElementById("json-label").style.display = "none";
+        document.getElementById("btn-save").classList.remove("visible");
+        document.getElementById("placeholder").style.display = "block";
+        clearError();
+    }
+
+    function showOutput(json, atlasDataURL, atlasW, atlasH) {
+        document.getElementById("placeholder").style.display = "none";
+
+        // Atlas
+        const atlasWrap = document.getElementById("atlas-wrap");
+        atlasWrap.classList.add("visible");
+        document.getElementById("atlas-label").textContent = `Atlas preview (${atlasW}×${atlasH})`;
+        document.getElementById("atlas-img").src = atlasDataURL;
+
+        // JSON
+        const str = JSON.stringify(json, null, 2);
+        const lines = str.split("\n");
+        const pre = document.getElementById("json-pre");
+        pre.textContent = lines.length > 50 ? lines.slice(0, 50).join("\n") + "\n..." : str;
+        pre.classList.add("visible");
+        document.getElementById("json-label").style.display = "block";
+
+        // Save button
+        document.getElementById("btn-save").classList.add("visible");
+    }
+
+    // ============================================================
+    // Merge logic
+    // ============================================================
+    async function doMerge() {
+        clearError();
+
+        if (!cmmData || !mcModel || !selectedBone) {
+            showError("Select CMM model, MC model, and a bone first");
+            return;
+        }
+
+        const mcTextures = extractMcTextures(mcModel);
+        // Проверяем что все текстуры замаплены (embedded или файлом)
+        const allMapped = mcTextures.every(({key}) => mcEmbeddedTextures[key] || textureFiles[key]);
+        if (!allMapped) {
+            showError("Map all MC model textures to PNG files first");
+            return;
+        }
+
+        try {
+            const atlas = new AtlasBuilder();
+            const bone = cmmData.model[selectedBone];
+
+            // 1) Существующая текстура кости → атлас
+            let existingImg = null;
+            if (bone.texture) {
+                existingImg = await loadImageFromBase64(bone.texture);
+                atlas.addImage("__existing__", existingImg);
+            }
+
+            // 2) MC текстуры → атлас (embedded dataURL или File)
+            const mcImgMap = {};
+            for (const {key} of mcTextures) {
+                let img;
+                const atlasName = `mc_${key}`;
+
+                if (mcEmbeddedTextures[key]) {
+                    img = await loadImageFromDataURL(mcEmbeddedTextures[key]);
+                } else {
+                    img = await loadImageFromFile(textureFiles[key]);
+                }
+
+                atlas.addImage(atlasName, img);
+                mcImgMap[key] = atlasName;
+            }
+
+            atlas.pack();
+            const {width: aw, height: ah} = atlas.getSize();
+
+            // 3) Ремап UV существующих элементов кости
+            // Их UV в MC формате (0-16), нужно: MC→pixel→atlas pixel→MC
+            const existingElements = (bone.elements || []).map((elem) => {
+                if (!bone.texture) return JSON.parse(JSON.stringify(elem));
+
+                const newFaces = {};
+                const entry = atlas.entries.get("__existing__");
+                for (const [dir, face] of Object.entries(elem.faces || {})) {
+                    const newFace = Object.assign({}, face);
+                    if (face.uv && entry) {
+                        const [u1, v1, u2, v2] = face.uv;
+                        // MC UV → пиксели старой текстуры
+                        const px_u1 = u1 * entry.w / 16;
+                        const px_v1 = v1 * entry.h / 16;
+                        const px_u2 = u2 * entry.w / 16;
+                        const px_v2 = v2 * entry.h / 16;
+                        // Пиксели старой текстуры → пиксели атласа → MC UV атласа
+                        newFace.uv = [
+                            Math.round((entry.x + px_u1) * 16 / aw * 100) / 100,
+                            Math.round((entry.y + px_v1) * 16 / ah * 100) / 100,
+                            Math.round((entry.x + px_u2) * 16 / aw * 100) / 100,
+                            Math.round((entry.y + px_v2) * 16 / ah * 100) / 100,
+                        ];
+                    }
+                    newFaces[dir] = newFace;
+                }
+                return Object.assign({}, elem, {faces: newFaces});
+            });
+
+            // 4) MC элементы — UV в пикселях после нормализации → atlas pixel → MC (0-16)
+            const mcElements = (mcModel.elements || []).map((elem) => {
+                const newFaces = {};
+                for (const [dir, face] of Object.entries(elem.faces || {})) {
+                    const newFace = Object.assign({}, face);
+
+                    const texRef = (face.texture || "").replace("#", "");
+                    const atlasTexName = mcImgMap[texRef];
+
+                    if (face.uv && atlasTexName) {
+                        const entry = atlas.entries.get(atlasTexName);
+                        if (entry) {
+                            const [u1, v1, u2, v2] = face.uv;
+                            // Пиксели исходной текстуры + смещение в атласе → MC UV атласа
+                            newFace.uv = [
+                                Math.round((entry.x + u1) * 16 / aw * 100) / 100,
+                                Math.round((entry.y + v1) * 16 / ah * 100) / 100,
+                                Math.round((entry.x + u2) * 16 / aw * 100) / 100,
+                                Math.round((entry.y + v2) * 16 / ah * 100) / 100,
+                            ];
+                        }
+                    }
+
+                    newFace.texture = "#texture";
+                    newFaces[dir] = newFace;
+                }
+
+                const result = {from: elem.from, to: elem.to, faces: newFaces};
+                if (elem.rotation) result.rotation = elem.rotation;
+                return result;
+            });
+
+            // 5) Собираем результат
+            resultData = JSON.parse(JSON.stringify(cmmData));
+            resultData.model[selectedBone] = Object.assign({}, bone, {
+                texture: atlas.toBase64(),
+                elements: [...existingElements, ...mcElements],
+            });
+
+            showOutput(resultData, atlas.toDataURL(), aw, ah);
+        } catch (err) {
+            showError("Merge failed: " + err.message);
+            console.error(err);
+        }
+    }
+
+    // ============================================================
+    // Init
+    // ============================================================
+    setupDropzone("cmm-drop", "cmm-input", handleCmmFile);
+    setupDropzone("mc-drop", "mc-input", handleMcFile);
+
+    document.getElementById("btn-merge").addEventListener("click", doMerge);
+    document.getElementById("btn-save").addEventListener("click", () => {
+        if (!resultData) return;
+        const name = cmmFilename.replace(/\.json$/i, "") + "_merged.json";
+        downloadJSON(resultData, name);
+    });
+</script>
+
+</body>
+</html>
