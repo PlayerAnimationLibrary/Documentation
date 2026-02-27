@@ -8,6 +8,7 @@ You can add custom bones to the Blockbench model AS LONG AS THEY ARE A CHILD OF 
 For example you could add a hip bone that rotates all the bones except the legs around well... the hips.  
 But for this to work you have to register the new bone you have created by adding something like this to the animation JSON:
 ```json5
+{
   "model": {
     "bone_name": {
       "pivot": [0, 12, 0]
@@ -18,7 +19,8 @@ But for this to work you have to register the new bone you have created by addin
     "left_arm": "bone_name",
     "torso": "bone_name",
     "head": "bone_name"
-  },
+  }
+}
 ```
 You can either add this to the root of the JSON or under a specific animation.  
 Replace `bone_name` with the name of your custom bone.  
