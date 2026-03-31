@@ -368,11 +368,11 @@
     <div class="panel">
         <div>
             <div class="section-label">Emote</div>
-            <div class="dropzone" id="cmm-drop">
+            <div class="dropzone" id="cbm-drop">
                 <span class="dropzone-icon">{ }</span>
                 <span class="dropzone-label">Emote .json here or click</span>
-                <span class="dropzone-info" id="cmm-info"></span>
-                <input accept=".json" id="cmm-input" style="display:none" type="file">
+                <span class="dropzone-info" id="cbm-info"></span>
+                <input accept=".json" id="cbm-input" style="display:none" type="file">
             </div>
         </div>
 
@@ -397,6 +397,13 @@
         <div class="section-label">Target Bone</div>
         <div id="bone-list"></div>
         <div class="bone-info" id="bone-info" style="display:none"></div>
+
+        <div id="merge-toggle-wrap" style="display:none">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:#888;padding:4px 0;">
+                <input id="merge-toggle" style="accent-color:#7c6f4a;cursor:pointer;" type="checkbox">
+                <span>Merge with existing elements</span>
+            </label>
+        </div>
 
         <div class="actions">
             <button class="btn-merge" disabled id="btn-merge">▸ Merge &amp; Build Atlas</button>
@@ -434,8 +441,8 @@
     // ============================================================
     // State
     // ============================================================
-    let cmmData = null;
-    let cmmFilename = "";
+    let cbmData = null;
+    let cbmFilename = "";
     let mcModel = null;           // normalized model (always has .textures, .elements, .texture_size)
     let mcFilename = "";
     let mcEmbeddedTextures = {};  // key → dataURL (from bbmodel)
@@ -700,7 +707,7 @@
 
     function updateMergeButton() {
         const btn = document.getElementById("btn-merge");
-        const ready = cmmData && mcModel && selectedBone;
+        const ready = cbmData && mcModel && selectedBone;
         btn.disabled = !ready;
         btn.classList.toggle("ready", !!ready);
     }
@@ -729,24 +736,24 @@
     }
 
     // ============================================================
-    // CMM load
+    // CBM load
     // ============================================================
-    async function handleCmmFile(file) {
+    async function handleCbmFile(file) {
         clearError();
         try {
-            cmmData = await readJSONFile(file);
-            cmmFilename = file.name;
+            cbmData = await readJSONFile(file);
+            cbmFilename = file.name;
             selectedBone = null;
             resultData = null;
 
-            const bones = extractBones(cmmData);
-            document.getElementById("cmm-info").textContent = `✓ ${file.name} · ${bones.length} bones`;
+            const bones = extractBones(cbmData);
+            document.getElementById("cbm-info").textContent = `✓ ${file.name} · ${bones.length} bones`;
 
             renderBoneList(bones);
             clearOutput();
             updateMergeButton();
         } catch (err) {
-            showError("Failed to parse CMM JSON: " + err.message);
+            showError("Failed to parse CBM JSON: " + err.message);
         }
     }
 
@@ -820,7 +827,7 @@
 
         // Show bone info
         const infoEl = document.getElementById("bone-info");
-        const bone = cmmData.model[name];
+        const bone = cbmData.model[name];
         if (bone) {
             infoEl.style.display = "block";
             infoEl.innerHTML =
@@ -829,6 +836,14 @@
                 `<div><span class="label">has texture:</span> ${bone.texture ? "yes" : "no"}</div>`;
         } else {
             infoEl.style.display = "none";
+        }
+
+        // Show merge toggle only if bone already has elements
+        const toggleWrap = document.getElementById("merge-toggle-wrap");
+        const hasExisting = bone && (bone.elements || []).length > 0;
+        toggleWrap.style.display = hasExisting ? "block" : "none";
+        if (!hasExisting) {
+            document.getElementById("merge-toggle").checked = false;
         }
 
         updateMergeButton();
@@ -949,8 +964,8 @@
     async function doMerge() {
         clearError();
 
-        if (!cmmData || !mcModel || !selectedBone) {
-            showError("Select CMM model, MC model, and a bone first");
+        if (!cbmData || !mcModel || !selectedBone) {
+            showError("Select CBM model, MC model, and a bone first");
             return;
         }
 
@@ -964,12 +979,12 @@
 
         try {
             const atlas = new AtlasBuilder();
-            const bone = cmmData.model[selectedBone];
+            const bone = cbmData.model[selectedBone];
+            const shouldMerge = document.getElementById("merge-toggle").checked;
 
-            // 1) Существующая текстура кости → атлас
-            let existingImg = null;
-            if (bone.texture) {
-                existingImg = await loadImageFromBase64(bone.texture);
+            // 1) Существующая текстура кости → атлас (только при мерже)
+            if (shouldMerge && bone.texture) {
+                const existingImg = await loadImageFromBase64(bone.texture);
                 atlas.addImage("__existing__", existingImg);
             }
 
@@ -992,34 +1007,37 @@
             atlas.pack();
             const {width: aw, height: ah} = atlas.getSize();
 
-            // 3) Ремап UV существующих элементов кости
+            // 3) Ремап UV существующих элементов кости (только при мерже)
             // Их UV в MC формате (0-16), нужно: MC→pixel→atlas pixel→MC
-            const existingElements = (bone.elements || []).map((elem) => {
-                if (!bone.texture) return JSON.parse(JSON.stringify(elem));
+            let existingElements = [];
+            if (shouldMerge) {
+                existingElements = (bone.elements || []).map((elem) => {
+                    if (!bone.texture) return JSON.parse(JSON.stringify(elem));
 
-                const newFaces = {};
-                const entry = atlas.entries.get("__existing__");
-                for (const [dir, face] of Object.entries(elem.faces || {})) {
-                    const newFace = Object.assign({}, face);
-                    if (face.uv && entry) {
-                        const [u1, v1, u2, v2] = face.uv;
-                        // MC UV → пиксели старой текстуры
-                        const px_u1 = u1 * entry.w / 16;
-                        const px_v1 = v1 * entry.h / 16;
-                        const px_u2 = u2 * entry.w / 16;
-                        const px_v2 = v2 * entry.h / 16;
-                        // Пиксели старой текстуры → пиксели атласа → MC UV атласа
-                        newFace.uv = [
-                            Math.round((entry.x + px_u1) * 16 / aw * 100) / 100,
-                            Math.round((entry.y + px_v1) * 16 / ah * 100) / 100,
-                            Math.round((entry.x + px_u2) * 16 / aw * 100) / 100,
-                            Math.round((entry.y + px_v2) * 16 / ah * 100) / 100,
-                        ];
+                    const newFaces = {};
+                    const entry = atlas.entries.get("__existing__");
+                    for (const [dir, face] of Object.entries(elem.faces || {})) {
+                        const newFace = Object.assign({}, face);
+                        if (face.uv && entry) {
+                            const [u1, v1, u2, v2] = face.uv;
+                            // MC UV → пиксели старой текстуры
+                            const px_u1 = u1 * entry.w / 16;
+                            const px_v1 = v1 * entry.h / 16;
+                            const px_u2 = u2 * entry.w / 16;
+                            const px_v2 = v2 * entry.h / 16;
+                            // Пиксели старой текстуры → пиксели атласа → MC UV атласа
+                            newFace.uv = [
+                                Math.round((entry.x + px_u1) * 16 / aw * 100) / 100,
+                                Math.round((entry.y + px_v1) * 16 / ah * 100) / 100,
+                                Math.round((entry.x + px_u2) * 16 / aw * 100) / 100,
+                                Math.round((entry.y + px_v2) * 16 / ah * 100) / 100,
+                            ];
+                        }
+                        newFaces[dir] = newFace;
                     }
-                    newFaces[dir] = newFace;
-                }
-                return Object.assign({}, elem, {faces: newFaces});
-            });
+                    return Object.assign({}, elem, {faces: newFaces});
+                });
+            }
 
             // 4) MC элементы — UV в пикселях после нормализации → atlas pixel → MC (0-16)
             const mcElements = (mcModel.elements || []).map((elem) => {
@@ -1054,11 +1072,16 @@
             });
 
             // 5) Собираем результат
-            resultData = JSON.parse(JSON.stringify(cmmData));
-            resultData.model[selectedBone] = Object.assign({}, bone, {
+            resultData = JSON.parse(JSON.stringify(cbmData));
+            const mergedBone = Object.assign({}, bone, {
                 texture: atlas.toBase64(),
                 elements: [...existingElements, ...mcElements],
             });
+            // Удаляем stale texture_size от предыдущих мержей —
+            // мод сам масштабирует UV через размер спрайта,
+            // а наш UV уже в MC формате (0-16)
+            delete mergedBone.texture_size;
+            resultData.model[selectedBone] = mergedBone;
 
             showOutput(resultData, atlas.toDataURL(), aw, ah);
         } catch (err) {
@@ -1070,13 +1093,13 @@
     // ============================================================
     // Init
     // ============================================================
-    setupDropzone("cmm-drop", "cmm-input", handleCmmFile);
+    setupDropzone("cbm-drop", "cbm-input", handleCbmFile);
     setupDropzone("mc-drop", "mc-input", handleMcFile);
 
     document.getElementById("btn-merge").addEventListener("click", doMerge);
     document.getElementById("btn-save").addEventListener("click", () => {
         if (!resultData) return;
-        const name = cmmFilename.replace(/\.json$/i, "") + "_merged.json";
+        const name = cbmFilename.replace(/\.json$/i, "") + "_merged.json";
         downloadJSON(resultData, name);
     });
 </script>
