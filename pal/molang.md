@@ -1,6 +1,6 @@
 ---
 sidebar_position: 5
-description: "Molang in PAL"
+description: "MoLang in PAL"
 ---
 
 # MoLang
