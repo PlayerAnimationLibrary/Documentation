@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 description: "Links to useful Emotecraft wiki pages for animation creation."
 ---
 
