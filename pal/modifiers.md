@@ -9,7 +9,7 @@ They can do all sorts of things, like mirror an animation, change it's speed, or
 PAL offers many built in modifiers, but you can also make your own modifiers. I will go into detail on both in this page.  
 Modifiers can be added to an instance of the `AnimationController` or `ModifierLayer` class.  
 You can use the `addModifier`, `addModifierBefore` or `addModifierLast` method to add a modifier to your animation.  
-Modifiers run in an order, the modifier with the lowest index runs first and has priority over all the other modifiers.  
+Modifiers run in order, the modifier with the lowest index runs first and has priority over all the other modifiers.  
 You can also use the `removeModifier`, `removeAllModifiers`, or `removeModifierIf` method to remove modifiers.
 
 :::warning
