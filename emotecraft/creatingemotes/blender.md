@@ -11,7 +11,7 @@ It is expected for you to already be familiar with Blender in some way. If you a
 # How do I make emotes?
 Firstly, when you open the project you have to run the script in the bottom of the screen. It adds new fields and buttons to the Action panel of Action Editor so you can setup and export your emote. You can [register](https://docs.blender.org/manual/en/5.2/editors/text_editor.html#text-menu) the script so it runs automatically when you open the project.  
 
-Now you animate. When you are done, open the Action tab of the Action Editor. Here you can configure your emote: set the name, description, author, badges, save directory etc.  
+Now you animate, and When you are done, open the Action tab of the Action Editor. Here you can set the emote name, description, author, badges, save directory etc.  
 
 To make an animation loop, check the `Cyclic Animation` box. When you do, the `Hold on last frame` checkbox for setting [looping](./looping.md) mode to `hold_on_last_frame` will appear.  
 By default the range of frames that gets exported is `0 - scene.end_frame`. If you want a different range, check the `Manual Frame Range` checkbox and set the `start` and `end` fields to the values you want. They must be integers(otherwise they will be rounded down on export).
@@ -30,7 +30,7 @@ The icon is created on export automatically and added to the emote json. In the 
 
 There is a switch in `settings` bone properties to enable vanlla mode, so the limbs imitate bending without actually being bent. IK sliders are also in `settings` bone properties.  
 There is a custom property on the head that makes it look at the `head_goal` bone.  
-There are bone groups so you can show or hide some parts of the rig (this wont affect the emote in the game).  
+There are bone groups so you can show or hide some parts of the rig. (this wont affect the emote in the game)  
 :::tip
 If you want to have multiple emotes in the same blend file, create new actions(don't forget to add a fake user to them!). If you want emotes with different bone structures in the same file, you can make a full copy of the scene and change the rig there, so you have both bone structures in the same file.
 You can append actions from your other blend files of the rig if you have them (for example when the rig gets updated)
