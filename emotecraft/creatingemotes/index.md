@@ -12,6 +12,10 @@ To decorate text, use [Text Component Generator](https://misode.github.io/text-c
 
 # Additional features
 
+## MoLang
+Emotes made in Blockbench or Blender can compute keyframe values while they play instead of baking them into keyframes, which is how you react to the player's state or build motion that never repeats itself.
+Emotecraft runs on PlayerAnimationLibrary, so the syntax, all the queries and all the math and easing functions are documented on the [PAL MoLang page](/pal/molang).
+
 ## Badges (1.21.4+)
 You can use [text components](/emotecraft/creatingemotes/) to create badges. You can have multiple of them!
 Here's a part of an emote file with badges:
