@@ -32,14 +32,14 @@ pal_version = <latest version from the table above>
 
 ## Maven repository
 
-`build.gradle`:
+`build.gradle` / `build.gradle.kts`:
 
-```groovy
+```gradle
 repositories {
     mavenCentral()
     maven {
         name = "RedlanceMinecraft"
-        url = "https://repo.redlance.org/public"
+        url = uri("https://repo.redlance.org/public")
     }
 }
 ```
@@ -48,27 +48,63 @@ repositories {
 
 Add the dependency for the loader you are using.
 
+:::note
+The snippets below are written so they work in both the Groovy and the Kotlin DSL.
+In the Kotlin DSL you can also pull the property out once and interpolate it directly:
+
+```kotlin
+val pal_version: String by project
+
+dependencies {
+    implementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version")
+}
+```
+:::
+
+:::info
+Minecraft is no longer obfuscated starting from 26.1, so there is nothing left to remap and Loom dropped its remapping configurations.
+On 26.1 and newer use the plain Gradle configurations, on older versions keep using the `mod` ones:
+
+| 26.1+            | 1.21.11 and older   |
+|------------------|---------------------|
+| `implementation` | `modImplementation` |
+| `api`            | `modApi`            |
+:::
+
 ### Fabric
 
-```groovy
-modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version"
+```gradle
+// 26.1+
+implementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:${property("pal_version")}")
+
+// 1.21.11 and older
+modImplementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:${property("pal_version")}")
 ```
 
 ### NeoForge
 
-```groovy
-implementation "com.zigythebird.playeranim:PlayerAnimationLibNeo:$pal_version"
+```gradle
+implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:${property("pal_version")}")
 ```
 
 ### Architectury — common
 
-```groovy
-modApi "com.zigythebird.playeranim:PlayerAnimationLibCommon:$pal_version"
-implementation "com.zigythebird.playeranim:PlayerAnimationLibCommon:$pal_version"
+```gradle
+// 26.1+
+api("com.zigythebird.playeranim:PlayerAnimationLibCommon:${property("pal_version")}")
+implementation("com.zigythebird.playeranim:PlayerAnimationLibCommon:${property("pal_version")}")
+
+// 1.21.11 and older
+modApi("com.zigythebird.playeranim:PlayerAnimationLibCommon:${property("pal_version")}")
+implementation("com.zigythebird.playeranim:PlayerAnimationLibCommon:${property("pal_version")}")
 ```
 
 ### Architectury — NeoForge
 
-```groovy
-modImplementation "com.zigythebird.playeranim:PlayerAnimationLibNeo:$pal_version"
+```gradle
+// 26.1+
+implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:${property("pal_version")}")
+
+// 1.21.11 and older
+modImplementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:${property("pal_version")}")
 ```
