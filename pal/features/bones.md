@@ -94,4 +94,4 @@ Disabled axes are skipped when a bone is copied with `copyOtherBoneIfNotDisabled
 Animations can declare extra bones with their own pivot points and parent them to existing ones — this is how rigs add things like a tail or a prop.
 PAL builds a `PivotBone` for each entry of the animation's `model` section and applies the parent hierarchy from its `parents` section every frame.
 
-See [Custom Pivot Points/Bones](/emotecraft/creatingemotes/custom_pivot_points) for how to set them up in Blockbench and Blender.
+See [Custom Pivot Points/Bones](/emotecraft/creatingemotes/custom_pivot_points) for how to set them up in Blockbench and Blender, and [Custom bones and the camera](./custom_bones.md) for animating your own model parts with them.
