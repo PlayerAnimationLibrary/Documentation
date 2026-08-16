@@ -7,7 +7,7 @@ description: "How to download and install custom emotes for Emotecraft."
 This section includes information about downloading and installing emotes for emotecraft.
 
 ### Downloading
-You can currently download emotes from [Emotes Open Collection](https://emotes.kosmx.dev/), or by using [RedlanceBot](https://discord.com/users/762690439769358377) on the emotecraft server in discord (You can also DM)
+You can download emotes from [EmotecraftLibrary (RedlanceEmotes)](https://emotes.redlance.org/)
 
 :::warning
 `.json` and `.emotecraft` emotes will NEVER contain viruses, but be careful about file ext and never double-click them!

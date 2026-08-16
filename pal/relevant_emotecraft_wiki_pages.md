@@ -1,9 +1,11 @@
 ---
-sidebar_position: 7
+sidebar_position: 5
+sidebar_label: "Emotecraft wiki pages"
 description: "Links to useful Emotecraft wiki pages for animation creation."
 ---
 
 # Relevant Emotecraft wiki pages
+
 Most pages related to actually making animations are in the Emotecraft wiki.
 I believe you will find these very useful:
 
@@ -12,4 +14,3 @@ I believe you will find these very useful:
 - [Custom Pivot Points/Bones](/emotecraft/creatingemotes/custom_pivot_points)
 - [Fading in/out](/emotecraft/creatingemotes/fades)
 - [Looping (For Blockbench formats)](/emotecraft/creatingemotes/looping)
-- [MoLang](/emotecraft/creatingemotes/molang)
