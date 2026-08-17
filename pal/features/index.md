@@ -10,5 +10,5 @@ Once your animations are playing, these are the features you can build on top of
 - [First person](./first_person.md) — animate the hand while the player is in first person.
 - [Keyframe events](./keyframe_events.md) — react to sound, particle and custom instruction keyframes.
 - [Bones](./bones.md) — what PAL animates and what you can transform on it.
-- [Mannequins](./mannequins.md) — the same animations, on mannequins.
+- [Mannequins and other entities](./mannequins.md) — the same animations on mannequins, and what it takes to animate anything else.
 - [Custom bones and the camera](./custom_bones.md) — animate your own model parts, or drive the camera from a bone.

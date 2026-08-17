@@ -5,14 +5,13 @@ description: "Documentation on PAL modifiers."
 
 # Modifiers
 
-PAL has a unique feature called a modifier, which can be used to change things about an animation.
-Modifiers can do all sorts of things, like mirror an animation, change its speed, or apply transformations to a specific bone.
+PAL has a unique feature called a modifier, which can be used to change things about an animation — mirror it, change its speed, or apply transformations to a specific [bone](./bones.md).
 
 PAL offers many built-in modifiers, but you can also make your own. Both are covered on this page.
 
 ## Adding and removing modifiers
 
-Modifiers can be added to an instance of the `AnimationController` or `ModifierLayer` class:
+Modifiers can be added to an instance of the `AnimationController` or `ModifierLayer` class using the following methods:
 
 - `addModifier`
 - `addModifierBefore`
@@ -40,7 +39,7 @@ There you can override many methods in order to change how the animation is proc
 |-------------------|-------------------------------------------------------------------------------------------------|
 | `tick`            | Called every game tick, useful for keeping track of time.                                        |
 | `setupAnim`       | Called every frame, useful for getting the tickDelta in order to make smooth translations.       |
-| `get3DTransform`  | The most useful method — called for every bone, and gives you the bone so you can apply whatever translations you want to it. |
+| `get3DTransform`  | The most useful method — called for every [bone](./bones.md), including the [custom ones](./custom_bones.md), and gives you the bone so you can apply whatever translations you want to it. |
 | `canRemove`       | If true, it will tell the host to remove the modifier.                                           |
 
 :::warning

@@ -5,7 +5,7 @@ description: "Introduction to PlayerAnimationLibrary — the official successor 
 
 # Introduction
 
-PlayerAnimationLibrary (PAL) is a library mod that lets your mod play and control animations on the player model.
+Player Animation Library (PAL) is a library mod that lets your mod play and control animations on the player model.
 
 ## Why should I use this?
 

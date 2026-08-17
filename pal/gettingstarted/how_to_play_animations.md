@@ -20,11 +20,11 @@ PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(ANIMATION_LAYER_ID
 - `ANIMATION_LAYER_ID` is the `ResourceLocation`/`Identifier` of your layer.
 - The number after it is the priority of your layer:
 
-| Priority | Used for                                  |
-|----------|-------------------------------------------|
-| Very low | Idle animations                           |
-| 1000     | Cosmetic stuff like emotes                |
-| 1500+    | Important gameplay animations             |
+| Priority     | Used for                                                             |
+|--------------|-----------------------------------------------------------------------|
+| 0–10         | Non-essential animations — idle poses, custom walking and running      |
+| 1000         | Cosmetic stuff like emotes                                            |
+| 1500+        | Important gameplay animations                                         |
 
 :::warning
 On Fabric you register controllers in your mod's client init class.
@@ -45,9 +45,16 @@ That's the most basic way to do it. `triggerAnimation` returns `false` and logs 
 
 ## The state handler
 
-The lambda you passed to the controller is its **state handler**, and it runs every frame:
+The lambda you passed to the controller is its **state handler**, and it runs every frame.
+You can use it to play an animation like this:
 
 ```java
+private static final RawAnimation WALK_ANIMATION = PlayerRawAnimationBuilder.begin()
+        .thenLoop(Identifier.fromNamespaceAndPath("my_mod", "walk"))
+        .build();
+
+// ...
+
 (controller, state, animSetter) -> {
     if (state.isMoving()) return animSetter.setAnimation(WALK_ANIMATION);
 
@@ -60,7 +67,7 @@ The lambda you passed to the controller is its **state handler**, and it runs ev
 - Call `animSetter.setAnimation(rawAnimation)` (optionally with a start tick) to set an animation and get a `PlayState` back.
 - The `state` is an `AnimationData` and carries `getPartialTick()`, `getVelocity()`, `isMoving()` and `isFirstPersonPass()`.
 
-Animations triggered with `triggerAnimation` are played on top of this, so a handler that always returns `STOP` is perfectly normal for a layer that only plays triggered animations.
+Animations triggered with `triggerAnimation` override this, so a handler that always returns `STOP` is perfectly normal for a layer that only plays triggered animations.
 
 ## Chaining animations
 
@@ -84,6 +91,18 @@ controller.triggerAnimation(animation);
 | `thenPlayXTimes(id, count)`     | Plays it `count` times.                                              |
 | `thenWait(ticks)`               | Waits for the given number of ticks.                                 |
 | `then(id, loopType)`            | Plays it with an explicit loop type.                                 |
+
+`PlayerRawAnimationBuilder` takes ids and looks the animations up for you.
+If you already hold `Animation` instances, `RawAnimation.begin()` is the same builder taking those directly, and `PlayerAnimResources` is where the loaded animations live:
+
+```java
+Animation walk = PlayerAnimResources.getAnimation(Identifier.fromNamespaceAndPath("my_mod", "walk"));
+
+RawAnimation animation = RawAnimation.begin()
+        .thenLoop(walk);
+```
+
+`PlayerAnimResources` also has `getAnimationOptional`, `hasAnimation`, `getAnimations` and `getModAnimations(modid)` if you need to look through what is loaded.
 
 The loop types are:
 

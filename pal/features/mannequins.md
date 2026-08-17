@@ -1,9 +1,9 @@
 ---
 sidebar_position: 5
-description: "Animating mannequins with PAL, not just players."
+description: "Animating mannequins and other non-player things with PAL."
 ---
 
-# Mannequins
+# Mannequins and other entities
 
 PAL does not animate players specifically — it animates **avatars**.
 `Avatar` is the vanilla type that both the player and the mannequin are, so on Minecraft versions that have mannequins your animations work on them without any extra code.
@@ -28,6 +28,11 @@ if (controller.getAvatar() instanceof AbstractClientPlayer player) {
 }
 ```
 
+:::warning
+Your factory runs for mannequins too, so a controller written back when only players existed will get one.
+If its state handler, its modifiers or its MoLang queries assume the avatar is a player and cast to one, that is a crash rather than a missing animation — do the check above rather than casting.
+:::
+
 ## MoLang on mannequins
 
 The [built-in MoLang queries](../molang.md) run on the avatar, so they work on mannequins too, and the player-specific ones fall back to a sensible default:
@@ -35,6 +40,22 @@ The [built-in MoLang queries](../molang.md) run on the avatar, so they work on m
 - `has_cape` reads the cape of both players and mannequins.
 - `player_level` returns `0` on a mannequin.
 - `is_first_person` is only ever true for the local player, so it stays `0`.
+
+## Anything that isn't an avatar
+
+Automatic wiring stops at avatars — mobs, block entities and your own models never get an `AvatarAnimManager`.
+The animation engine itself doesn't care, though: the whole `core` module has no Minecraft classes in it at all, and `HumanoidAnimationController` only wants a state handler and a MoLang engine, not an entity.
+
+So you can animate anything, as long as you own the three things PAL normally does for you:
+
+1. **Construct the controller** yourself and keep it wherever your entity or block entity data lives.
+2. **Drive it** — call `tick` once per game tick and `setupAnim` once per frame with an `AnimationData` you build from your own velocity and partial tick.
+3. **Apply the bones** to your model the same way [custom bones](./custom_bones.md) describes, with `RenderUtil.copyVanillaPart` and `RenderUtil.translatePartToBone`.
+
+:::warning
+Don't hand it the default MoLang engine. The built-in queries cast the controller to `PlayerAnimationController` when they're read, so an animation using something like `q.is_on_fire` on a non-player controller throws a `ClassCastException` at evaluation time.
+The controller constructor takes the engine factory, so pass one built with `MolangLoader.createBaseEngine` and register whatever queries make sense for your thing.
+:::
 
 ## Testing
 

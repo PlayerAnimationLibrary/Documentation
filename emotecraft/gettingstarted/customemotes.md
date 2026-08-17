@@ -9,8 +9,8 @@ This section includes information about downloading and installing emotes for em
 ### Downloading
 You can download emotes from [EmotecraftLibrary (RedlanceEmotes)](https://emotes.redlance.org/)
 
-:::warning
-`.json` and `.emotecraft` emotes will NEVER contain viruses, but be careful about file ext and never double-click them!
+:::note
+`.json` and `.emotecraft` emote files are plain data — they will NEVER contain viruses.
 :::
 
 ### Installing

@@ -25,7 +25,7 @@ This may be disappointing to some, but thankfully there are options to make this
 
 So great, now you have enabled first person animations! Here are a few things you can tweak about it.
 
-### Mode configuration
+### Configuration
 
 The first thing you can change is the first person mode configuration, changed using the `setFirstPersonConfiguration` method.
 It takes a `FirstPersonConfiguration` — a class with 5 booleans that lets you change three things: whether the arms, the held items and the armor are rendered.

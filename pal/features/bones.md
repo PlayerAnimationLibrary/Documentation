@@ -71,7 +71,7 @@ Bone names are normalised when an animation is loaded, so `leftArm` in a file be
 | `AdvancedPlayerAnimBone`  | Adds a per-axis transition length, used for the begin/end tick fades. The controller's own bones are these. |
 | `PivotBone`               | A bone with a custom pivot point, created from the `model` section of an animation.                     |
 
-The bone you receive in a modifier's `get3DTransform` is a `PlayerAnimBone`, so you can read and write all four transforms on it:
+The bone you receive in a [modifier's](./modifiers.md) `get3DTransform` is a `PlayerAnimBone`, so you can read and write all four transforms on it:
 
 ```java
 @Override

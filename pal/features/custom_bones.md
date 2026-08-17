@@ -6,7 +6,7 @@ description: "How PAL drives the vanilla model parts, and how to animate your ow
 
 # Custom bones and the camera
 
-PAL animates the vanilla player parts through a very small contract, and the same contract is available to you — so anything you can render, you can animate.
+All the APIs PAL uses to animate the player are available to you, so you can use them to animate custom player accessories or any other player related models.
 
 ## How the vanilla bones are animated
 
@@ -84,6 +84,11 @@ An animation can bring its own bones with it, through the `model` and `parents` 
 PAL creates a `PivotBone` for every entry of `model`, so the bone works without being registered on the controller, and `parents` makes it follow another bone.
 This is the same mechanism as [custom pivot points](/emotecraft/creatingemotes/custom_pivot_points) in emotes.
 
+:::warning
+Give the bone a `parents` entry even if it hangs off the body, not just a `model` entry.
+A pivot bone that has no parent is animated, but it is never added to the controller's active bones, so reading it back the way the next section describes returns nothing.
+:::
+
 ## Reading a bone without a model part
 
 If you are not posing a `ModelPart` — you want to place a particle, aim something, or drive the camera — ask the animation stack for the bone directly:
@@ -98,18 +103,15 @@ PlayerAnimBone bone = manager.get3DTransform(new PlayerAnimBone("head"));
 
 The bone you get back starts from zero, so what you read is the animation's contribution alone, without the vanilla pose.
 
-For rendering something at a bone in the world, `PlayerAnimationController` can hand you a ready `PoseStack`:
-
-```java
-PoseStack poseStack = controller.getBoneWorldPositionPoseStack("right_item", tickDelta, cameraPos);
-```
-
-It returns `null` when the bone is not being animated right now, and it already accounts for the avatar's position, its body rotation and the bone's pivot.
+:::note
+PAL bones don't account for the initial poses of model parts — every bone starts from `(0, 0, 0)`.
+That is why the vanilla parts are posed through `copyVanillaPart` and `translatePartToBone`, which add the initial pose back.
+:::
 
 ## The camera
 
 :::warning
-PAL does **not** animate the camera. There is a `HeadBoundCameraModifier` in the source, but it is commented out and marked as a TODO, so there is no camera hook to register into.
+PAL does **not** animate the camera — there is no camera hook to register into yet.
 :::
 
 What you can do is drive the camera yourself from a bone, since reading one is just the snippet above:
