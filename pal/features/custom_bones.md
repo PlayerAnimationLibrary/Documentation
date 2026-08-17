@@ -1,10 +1,9 @@
 ---
 sidebar_position: 6
-sidebar_label: "Custom bones & camera"
-description: "How PAL drives the vanilla model parts, and how to animate your own model parts or the camera."
+description: "How PAL drives the vanilla model parts, and how to animate your own model parts with the same APIs."
 ---
 
-# Custom bones and the camera
+# Custom bones
 
 All the APIs PAL uses to animate the player are available to you, so you can use them to animate custom player accessories or any other player related models.
 
@@ -91,7 +90,7 @@ A pivot bone that has no parent is animated, but it is never added to the contro
 
 ## Reading a bone without a model part
 
-If you are not posing a `ModelPart` — you want to place a particle, aim something, or drive the camera — ask the animation stack for the bone directly:
+If you are not posing a `ModelPart` — you want to place a particle, or aim something — ask the animation stack for the bone directly:
 
 ```java
 AvatarAnimManager manager = PlayerAnimationAccess.getPlayerAnimManager(avatar);
@@ -108,26 +107,5 @@ PAL bones don't account for the initial poses of model parts — every bone star
 That is why the vanilla parts are posed through `copyVanillaPart` and `translatePartToBone`, which add the initial pose back.
 :::
 
-## The camera
-
-:::warning
-PAL does **not** animate the camera — there is no camera hook to register into yet.
-:::
-
-What you can do is drive the camera yourself from a bone, since reading one is just the snippet above:
-
-1. Register a bone for it, or have the animation declare one — a `camera` bone in the animation's `model` section is the tidiest option, because then the animator controls it like any other bone.
-2. Read it every frame while the camera is being positioned, wherever your loader lets you do that.
-3. Convert the values: divide `bone.position` by `16` to get blocks, and use `bone.rotation` as radians. `RenderUtil.translateMatrixToBone` does exactly this conversion if you are working with a `PoseStack`.
-
-```java
-PlayerAnimBone camera = manager.get3DTransform(new PlayerAnimBone("camera"));
-
-double x = camera.position.x / 16d;
-double y = camera.position.y / 16d;
-double z = camera.position.z / 16d;
-```
-
-:::note
-Check `manager.isActive()` before applying anything, and fall back to the vanilla camera when no animation is playing — otherwise the camera stays stuck wherever the last frame left it.
-:::
+The values you get are PAL's own: positions in pixels, rotations in radians.
+If you are placing something in the world with a `PoseStack`, `RenderUtil.translateMatrixToBone` applies the bone to it and converts the position to blocks for you.
