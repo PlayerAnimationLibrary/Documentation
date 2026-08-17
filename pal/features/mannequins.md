@@ -44,13 +44,13 @@ The [built-in MoLang queries](../molang.md) run on the avatar, so they work on m
 ## Anything that isn't an avatar
 
 Automatic wiring stops at avatars — mobs, block entities and your own models never get an `AvatarAnimManager`.
-The animation engine itself doesn't care, though: the whole `core` module has no Minecraft classes in it at all, and `HumanoidAnimationController` only wants a state handler and a MoLang engine, not an entity.
+The animation engine itself doesn't care, though: the whole `core` module has no Minecraft classes in it at all, and neither `AnimationController` nor `HumanoidAnimationController` wants an entity — a state handler and a MoLang engine is the whole requirement.
 
-So you can animate anything, as long as you own the three things PAL normally does for you:
+So you can animate anything, as long as you do the three things PAL normally does for you:
 
-1. **Construct the controller** yourself and keep it wherever your entity or block entity data lives.
+1. **Construct the controller** yourself and keep it wherever your entity or block entity data lives. `HumanoidAnimationController` if your model has the player bones, or `AnimationController` with your own `registerBones` if it doesn't.
 2. **Drive it** — call `tick` once per game tick and `setupAnim` once per frame with an `AnimationData` you build from your own velocity and partial tick.
-3. **Apply the bones** to your model the same way [custom bones](./custom_bones.md) describes, with `RenderUtil.copyVanillaPart` and `RenderUtil.translatePartToBone`.
+3. **Apply the bones** to your model the same way [custom bones](./custom_bones.md) describes: `get3DTransform` to read a bone out of the controller, and `RenderUtil.copyVanillaPart` and `RenderUtil.translatePartToBone` to move a model part with it.
 
 :::warning
 Don't hand it the default MoLang engine. The built-in queries cast the controller to `PlayerAnimationController` when they're read, so an animation using something like `q.is_on_fire` on a non-player controller throws a `ClassCastException` at evaluation time.

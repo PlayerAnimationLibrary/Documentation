@@ -22,7 +22,7 @@ PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(ANIMATION_LAYER_ID
 
 | Priority     | Used for                                                             |
 |--------------|-----------------------------------------------------------------------|
-| 0–10         | Non-essential animations — idle poses, custom walking and running      |
+| 0–10         | Non-essential animations — like idle poses, custom walking, and running anims |
 | 1000         | Cosmetic stuff like emotes                                            |
 | 1500+        | Important gameplay animations                                         |
 
@@ -50,7 +50,7 @@ You can use it to play an animation like this:
 
 ```java
 private static final RawAnimation WALK_ANIMATION = PlayerRawAnimationBuilder.begin()
-        .thenLoop(Identifier.fromNamespaceAndPath("my_mod", "walk"))
+        .then(Identifier.fromNamespaceAndPath("my_mod", "walk"), Animation.LoopType.LOOP)
         .build();
 
 // ...
