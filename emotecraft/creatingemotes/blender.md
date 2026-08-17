@@ -54,7 +54,7 @@ Make sure you have selected the armature and you are in the pose mode. Click the
 
 # MoLang
 Since this rig exports in the Blockbench format, you can replace any exported keyframe value with a MoLang expression and have it computed while the emote plays.  
-See the [PAL MoLang page](/pal/molang) for the syntax, every available query, and all the math and easing functions.  
+See [MoLang](./molang.md) for how to write them.  
 
 # Blockbench compatibility
 This rig exports emotes in the same format as Blockbench does, so if you are following some rules, you can get the animation to be able to be imported to Blockbench:  

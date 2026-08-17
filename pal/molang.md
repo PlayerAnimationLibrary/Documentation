@@ -13,7 +13,7 @@ MoLang lets you compute a keyframe value while the animation plays instead of ba
 Every animation controller creates its own MoLang engine, so `variable`/`v` values live as long as the controller and are shared between all animations it plays, but never leak into another player's controller.
 
 :::info
-Emotecraft runs on PAL, so everything on this page applies to emotes as well — see [Creating Emotes With Blockbench](/emotecraft/creatingemotes/blockbench).
+This page is the reference. If you are writing an emote rather than a mod, start with [MoLang in the Emotecraft wiki](/emotecraft/creatingemotes/molang), which teaches the same thing from scratch, and come back here for the lists.
 :::
 
 ## Where you can use MoLang

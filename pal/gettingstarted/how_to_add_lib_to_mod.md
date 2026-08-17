@@ -81,6 +81,10 @@ implementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:${property("
 modImplementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:${property("pal_version")}")
 ```
 
+:::note
+Unimined uses the same configurations as Fabric Loom, so this snippet works there as well.
+:::
+
 ### NeoForge
 
 ```gradle

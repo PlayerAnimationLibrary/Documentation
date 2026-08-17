@@ -42,4 +42,4 @@ If no name is specified in the extra data then the animation name specified in B
 
 # MoLang
 Keyframe values in this format can be MoLang expressions instead of numbers, so they are computed while the emote plays.
-See the [PAL MoLang page](/pal/molang) for the syntax, every available query, and all the math and easing functions.
+See [MoLang](./molang.md) for how to write them.

@@ -14,3 +14,4 @@ I believe you will find these very useful:
 - [Custom Pivot Points/Bones](/emotecraft/creatingemotes/custom_pivot_points)
 - [Fading in/out](/emotecraft/creatingemotes/fades)
 - [Looping (For Blockbench formats)](/emotecraft/creatingemotes/looping)
+- [MoLang](/emotecraft/creatingemotes/molang)
