@@ -6,9 +6,9 @@ description: "Using MoLang in an emote: what it is, where to write it, and worke
 # MoLang
 
 Every value in an emote is normally a fixed number you set on a keyframe.
-MoLang lets you write a little formula in place of that number, and the game works it out again on every single frame while the emote plays.
+MoLang lets you write a little formula in place of that number, and the game solves it on every single frame while the emote plays.
 
-That's how an emote reacts to what's going on — how long it has been playing, whether the player is sneaking, what time it is in the world — and how you build movement that would be miserable to keyframe by hand.
+That's how an emote reacts to what's going on — like how long it has been playing, whether the player is sneaking, what time it is in the world — and how you build movement that would be miserable to keyframe by hand.
 
 You don't need to know how to code. A MoLang expression is one line of maths.
 

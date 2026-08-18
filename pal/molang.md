@@ -5,16 +5,16 @@ description: "MoLang in PAL: syntax, built-in queries, math functions and how to
 
 # MoLang
 
+:::info
+If you are unfamiliar with what MoLang is and want to use it to create an animation, refer to the [MoLang page in the Emotecraft wiki](/emotecraft/creatingemotes/molang).
+:::
+
 PAL evaluates MoLang with [mochafloats](https://github.com/PlayerAnimationLibrary/mochafloats), a fork of [Mocha](https://unnamed.team/docs/mocha) that computes with floats instead of doubles.
 Almost all of Bedrock MoLang's functionality is present, and all MoLang queries and functions have been implemented — [here is the full documentation for Bedrock MoLang](https://bedrock.dev/docs/stable/Molang).
 
 MoLang lets you compute a keyframe value while the animation plays instead of baking it into keyframes, so you can react to the player's state or build motion that never repeats itself.
 
 Every animation controller creates its own MoLang engine, so `variable`/`v` values live as long as the controller and are shared between all animations it plays, but never leak into another player's controller.
-
-:::info
-This page is the reference. If you are writing an emote rather than a mod, start with [MoLang in the Emotecraft wiki](/emotecraft/creatingemotes/molang), which teaches the same thing from scratch, and come back here for the lists.
-:::
 
 ## Where you can use MoLang
 
