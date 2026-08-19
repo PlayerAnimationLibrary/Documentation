@@ -39,3 +39,7 @@ To specify the author, description, or anything else, you must use the `player_a
 You can store whatever data you want in it, and PAL will load them!  
 Though Emotecraft only uses data it's interested in, like the data in the example.  
 If no name is specified in the extra data then the animation name specified in Blockbench is used.
+
+# MoLang
+Keyframe values in this format can be MoLang expressions instead of numbers, so they are computed while the emote plays.
+See [the page on MoLang](./molang.md) for how to write them.

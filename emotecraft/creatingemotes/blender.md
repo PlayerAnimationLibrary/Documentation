@@ -52,6 +52,10 @@ Make sure you have selected the armature and you are in the pose mode. Click the
 - Drivers don't get exported.  
 - Easings may look incorrect, because they work differently in Blender compared to the game.  
 
+# MoLang
+Since this rig exports in the Blockbench format, you can replace any exported keyframe value with a MoLang expression and have it computed while the emote plays.  
+See [the page on MoLang](./molang.md) for how to write them.  
+
 # Blockbench compatibility
 This rig exports emotes in the same format as Blockbench does, so if you are following some rules, you can get the animation to be able to be imported to Blockbench:  
 1. When you place a keyframe place on on all the 3 axes. For example if you change location, put a keyframe on x, y, and z. Same with rotation and scale.  

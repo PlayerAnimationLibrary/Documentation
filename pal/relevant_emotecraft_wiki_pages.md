@@ -1,9 +1,11 @@
 ---
-sidebar_position: 7
+sidebar_position: 5
+sidebar_label: "Emotecraft wiki pages"
 description: "Links to useful Emotecraft wiki pages for animation creation."
 ---
 
 # Relevant Emotecraft wiki pages
+
 Most pages related to actually making animations are in the Emotecraft wiki.
 I believe you will find these very useful:
 
