@@ -38,11 +38,21 @@ Every keyframe fires **once per playthrough** — it is remembered until the ani
 
 :::note
 Blockbench writes these three objects for you when you add sound, particle and timeline keyframes to an animation.
+You can add one of these effect keyframes on Blockbench by clicking on the `Animate Effects` button.
+The `Animate Effects` button has an icon that looks like a wand, and can be found at the top of the animation timeline.
 :::
 
 ## Handling them
 
-Every kind has an event on `CustomKeyFrameEvents`:
+You can register handlers for the different types of effect keyframes on the controller:
+
+```java
+controller.setSoundKeyframeHandler((animationTick, ctrl, keyframeData, animationData) -> ...);
+controller.setParticleKeyframeHandler(...);
+controller.setCustomInstructionKeyframeHandler(...);
+```
+
+If you want to register a handler for all controllers every effect keyframe kind has an event on `CustomKeyFrameEvents`:
 
 ```java
 CustomKeyFrameEvents.CUSTOM_INSTRUCTION_KEYFRAME_EVENT.register((animationTick, controller, keyframeData, animationData) -> {
@@ -62,14 +72,6 @@ A handler returns an `EventResult`:
 | `PASS`    | Not interested — the next listener gets a shot at the keyframe.                       |
 | `SUCCESS` | Handled — the other listeners of the event still run, but see the note below.          |
 | `FAIL`    | Stop — no further listeners run, and the rest of the keyframes are skipped this pass. |
-
-If you only care about a single controller, set a handler on it directly instead of listening globally:
-
-```java
-controller.setSoundKeyframeHandler((animationTick, ctrl, keyframeData, animationData) -> ...);
-controller.setParticleKeyframeHandler(...);
-controller.setCustomInstructionKeyframeHandler(...);
-```
 
 The controller's own handler runs **first**, and the global event only runs if it returned `PASS` — so returning `SUCCESS` there is how you keep other mods' listeners out of your controller's keyframes.
 
