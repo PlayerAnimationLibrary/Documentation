@@ -12,6 +12,10 @@ const SAMPLE_RATE = 48000;
 // The wasm build is 31 MB, so it is fetched from a CDN rather than committed here
 const CORE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd';
 
+// `-ac 1` sums the channels without halving them, which is +6 dB and clips on playback. The limiter
+// then catches what the encoder itself overshoots; without level=disabled it would undo its own work.
+const DOWNMIX = 'pan=mono|c0=0.5*c0+0.5*c1,alimiter=level=disabled:limit=0.9';
+
 const QUALITIES = [
   {kbps: 16, label: '16 kbps — speech, tiny file'},
   {kbps: 24, label: '24 kbps — small'},
@@ -162,9 +166,10 @@ export default function OpusConverter(): React.ReactElement {
       const args = ['-i', 'input', '-vn'];
       if (it.from > 0) args.push('-ss', String(it.from));
       args.push('-t', String(it.length));
+      args.push('-af', DOWNMIX);
       // Constrained VBR keeps the average near the target, so the size estimate above stays honest
       args.push('-c:a', 'libopus', '-b:a', String(it.bitrate), '-vbr', 'constrained');
-      args.push('-ac', '1', '-ar', String(SAMPLE_RATE));
+      args.push('-ar', String(SAMPLE_RATE));
       if (loop) args.push('-metadata', `LOOPSTART=${Math.round(it.loopAt * SAMPLE_RATE)}`);
       args.push('output.opus');
 

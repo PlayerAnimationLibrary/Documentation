@@ -44,8 +44,14 @@ will not let you make a file the mod would reject.
 If you would rather do it yourself, [ffmpeg](https://ffmpeg.org/) does the same job:
 
 ```bash
-ffmpeg -i song.mp3 -c:a libopus -b:a 32k -vbr constrained -ac 1 -ar 48000 wave.opus
+ffmpeg -i song.mp3 -af "pan=mono|c0=0.5*c0+0.5*c1,alimiter=level=disabled:limit=0.9" \
+  -c:a libopus -b:a 32k -vbr constrained -ar 48000 wave.opus
 ```
+
+Do not reach for `-ac 1` to make it mono. It adds the two channels together without halving them, which
+is 6 dB of gain the track never asked for, and everything above full scale comes back as crackling. The
+`pan` filter mixes them properly, and the limiter catches the overshoot the encoder itself adds at low
+bitrates. `level=disabled` matters: without it the limiter puts the level straight back.
 
 The sound has to be **mono**. Everything else below is a limit rather than a requirement.
 
@@ -56,8 +62,8 @@ By default the sound plays once, even if the emote itself repeats forever. To ma
 `LOOPSTART=96000` restarts from the two second mark:
 
 ```bash
-ffmpeg -i song.mp3 -c:a libopus -b:a 32k -vbr constrained -ac 1 -ar 48000 \
-  -metadata LOOPSTART=96000 wave.opus
+ffmpeg -i song.mp3 -af "pan=mono|c0=0.5*c0+0.5*c1,alimiter=level=disabled:limit=0.9" \
+  -c:a libopus -b:a 32k -vbr constrained -ar 48000 -metadata LOOPSTART=96000 wave.opus
 ```
 
 Use `LOOPSTART=0` to simply start over from the beginning. A later value is for tracks with an intro that
