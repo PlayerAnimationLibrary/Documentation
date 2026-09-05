@@ -16,6 +16,25 @@ emotes/
 
 The sound travels with the emote, so other players hear it without having to download anything themselves.
 
+## What .opus is
+
+Nothing special, and nothing invented for this mod. Opus is an ordinary audio format, the same one Discord and
+most voice chats use, and `.opus` is simply an audio file holding it. Emotecraft asks for it because it stays
+small: a few hundred kilobytes for a whole song, which is what makes sending the sound along with the emote
+possible at all.
+
+Playing one back depends on your system:
+
+| | |
+|---|---|
+| Windows 10 and 11 | opens as is |
+| Linux, Android | opens as is |
+| macOS | QuickTime and Music cannot, [VLC](https://www.videolan.org/vlc/) can |
+| Anywhere | drag the file into a Chrome or Firefox window |
+
+That browser trick is the quickest way to check a file without installing anything, and the converter below
+lets you listen to the result before you download it at all.
+
 ## Making the file
 
 The easiest way is the **[Emote Sound Converter](/opus-converter)**. Drop in any audio file, choose how it
