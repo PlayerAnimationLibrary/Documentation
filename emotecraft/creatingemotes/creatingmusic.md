@@ -97,10 +97,28 @@ when the emote loads.
 
 ## Note Block Studio (legacy)
 
-Older versions used [Note Block Studio](https://noteblock.studio/) songs saved as `\{nameOfEmoteFile\}.nbs`.
-Current versions no longer play them, but they are still passed along: keep the `.nbs` next to the emote and
-players on an older version of the mod will hear it, while everyone else hears the `.opus`. Shipping both is
-safe.
+Older versions used [Note Block Studio](https://noteblock.studio/) songs saved as
+`\{nameOfEmoteFile\}.nbs`. Current versions no longer play them.
+
+They are still passed along, though, so an emote can carry both files at once:
+
+```text
+emotes/
+  wave.json
+  wave.opus
+  wave.nbs
+```
+
+Everyone hears something. Players on a current version get the `.opus`; players on an older one get the
+`.nbs`, because the mod keeps sending it to anyone who cannot read Opus. A server passes on whichever one
+each player is able to play, so a single pack works across versions.
+
+If you are publishing an emote that already has a `.nbs`, keeping it costs a few kilobytes and loses nothing.
+Only the `.opus` is sent to modern clients; the `.nbs` travels alongside it when an emote is stored, and on
+its own when the other side is old.
+
+Emotes from [EmotecraftLibrary (RedlanceEmotes)](https://emotes.redlance.org/) need none of this: the library
+generates the `.opus` for every emote that has a `.nbs`, so downloads already carry both.
 
 # Useful links
 - [Emote Sound Converter](/opus-converter) - Turn any audio file into an emote sound, in your browser.
