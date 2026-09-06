@@ -69,6 +69,9 @@ ffmpeg -i song.mp3 -af "pan=mono|c0=0.5*c0+0.5*c1,alimiter=level=disabled:limit=
 Use `LOOPSTART=0` to simply start over from the beginning. A later value is for tracks with an intro that
 should only be heard once. The converter has a checkbox for this and works the number out for you.
 
+Both ends are honoured to the sample. An encoder pads its last frame out to a whole 20 ms, and that padding
+is dropped rather than played, so a track that was seamless stays seamless.
+
 The sound and the animation loop independently, each on its own length, so they drift apart over time unless
 they happen to line up.
 
