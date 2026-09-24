@@ -13,8 +13,9 @@ const SAMPLE_RATE = 48000;
 const CORE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd';
 
 // `-ac 1` sums the channels without halving them, which is +6 dB and clips on playback. The limiter
-// then catches what the encoder itself overshoots; without level=disabled it would undo its own work.
-const DOWNMIX = 'pan=mono|c0=0.5*c0+0.5*c1,alimiter=level=disabled:limit=0.9';
+// then catches what the encoder itself overshoots; without level=disabled it would undo its own work,
+// and without latency=1 it would start 5 ms late and drop the last 5 ms, a gap wherever a loop starts over.
+const DOWNMIX = 'pan=mono|c0=0.5*c0+0.5*c1,alimiter=level=disabled:limit=0.9:latency=1';
 
 const QUALITIES = [
   {kbps: 16, label: '16 kbps — speech, tiny file'},
@@ -164,6 +165,8 @@ export default function OpusConverter(): React.ReactElement {
       await tool.writeFile('input', new Uint8Array(await file.arrayBuffer()));
 
       const args = ['-i', 'input', '-vn'];
+      // Otherwise every tag of the source is copied over, such as the kilobytes of XMP an editor leaves behind
+      args.push('-map_metadata', '-1');
       if (it.from > 0) args.push('-ss', String(it.from));
       args.push('-t', String(it.length));
       args.push('-af', DOWNMIX);
