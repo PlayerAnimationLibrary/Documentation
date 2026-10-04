@@ -48,6 +48,14 @@ repositories {
 
 Add the dependency for the loader you are using.
 
+:::warning
+We are absolutely against jar in jaring/including this mod in your mod.  
+Jar in jaring has zero benefits, it stops us from getting downloads, and it stops users from getting important library updates.  
+If you are worried that your mod has too many dependencies, don't be.  
+Most mod loaders automatically download dependencies, and even manually downloading libraries is not a big hassle. 
+With all this in mind please don't JIJ our mod, or anyone else's mod.  
+:::
+
 :::note
 The snippets below are written so they work in both the Groovy and the Kotlin DSL.
 In the Kotlin DSL you can also pull the property out once and interpolate it directly:
@@ -80,10 +88,6 @@ implementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:${property("
 // 1.21.11 and older
 modImplementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:${property("pal_version")}")
 ```
-
-:::note
-Unimined uses the same configurations as Fabric Loom, so this snippet works there as well.
-:::
 
 ### NeoForge
 
