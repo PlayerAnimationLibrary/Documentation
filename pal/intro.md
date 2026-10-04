@@ -14,7 +14,7 @@ Here are a couple of the features the mod provides that you might find very usef
 - Provides an easy way to play JSON animations made in Blockbench **and** Blender, while allowing you to modify them using code.
 - Enables smooth transitions between all animations.
 - Has a priority system, so conflicts between two mods trying to animate the player at the same time can be resolved.
-- Almost full [MoLang](./molang.md) support using [Mocha](https://unnamed.team/docs/mocha) — even stuff like arrow `->` operators and variables!
+- Almost full [MoLang](./molang.md) support using [mochafloats](/mochafloats/intro), our fork of Mocha — even stuff like arrow `->` operators and variables!
 
 ## Why should I use this over PlayerAnimator?
 

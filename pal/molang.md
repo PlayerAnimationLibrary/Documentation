@@ -9,7 +9,7 @@ description: "MoLang in PAL: syntax, built-in queries, math functions and how to
 If you are unfamiliar with what MoLang is and want to use it to create an animation, refer to the [MoLang page in the Emotecraft wiki](/emotecraft/creatingemotes/molang).
 :::
 
-PAL evaluates MoLang with [mochafloats](https://github.com/PlayerAnimationLibrary/mochafloats), a fork of [Mocha](https://unnamed.team/docs/mocha) that computes with floats instead of doubles.
+PAL evaluates MoLang with [mochafloats](/mochafloats/intro), our fork of [Mocha](https://github.com/unnamed/mocha) that computes with floats instead of doubles and fixes bugs Mocha still has — see [Why mochafloats?](/mochafloats/why_mochafloats).
 Almost all of Bedrock MoLang's functionality is present, and all MoLang queries and functions have been implemented — [here is the full documentation for Bedrock MoLang](https://bedrock.dev/docs/stable/Molang).
 
 MoLang lets you compute a keyframe value while the animation plays instead of baking it into keyframes, so you can react to the player's state or build motion that never repeats itself.
