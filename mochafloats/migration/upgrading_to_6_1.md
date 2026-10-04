@@ -6,6 +6,7 @@ description: "What changes when you update mochafloats from 6.0 to 6.1: MoLang t
 # Upgrading to 6.1
 
 6.1 doesn't remove or change any public API, so code written for 6.0 compiles against it unchanged.
+Coming from mochafloats 5 or earlier? Start with [Migrating to mochafloats 6](./migrating_from_mocha.md).
 What changes is the result of some MoLang: 6.1 was checked against Bedrock in the game and now agrees with it, and bugs in the parser, the compiler and the Java bindings are fixed.
 
 ## MoLang that evaluates differently

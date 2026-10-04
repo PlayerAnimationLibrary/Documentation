@@ -251,6 +251,6 @@ PlayerAnimationLibrary's binary animation format, the one that goes over the net
 
 - **Java 24 or newer.** The ClassFile API doesn't exist before Java 24. Minecraft 26.1 and newer runs on Java 25.
 - **Float precision.** A float holds about 7 significant digits, and whole numbers are only exact up to 16,777,216: `16777217` evaluates to `16777216`. That's plenty for animation, but large counters lose precision — a world's game time in ticks (`q.time_stamp` in PAL) passes that limit after about 9.7 days of running, so prefer values that stay small, like `q.anim_time`.
-- **A different API.** Packages moved to `org.redlance.mocha`, and `MochaEngine` was split into an interpreter and a compiler. [Migrating from Mocha](./migration/migrating_from_mocha.md) maps every old call to its new place.
+- **A different API.** Packages moved to `org.redlance.mocha`, and `MochaEngine` was split into an interpreter and a compiler. [Migrating to mochafloats 6](./migration/migrating_from_mocha.md) maps every old call to its new place.
 
 Already on mochafloats 6.0? [Upgrading to 6.1](./migration/upgrading_to_6_1.md) lists what changed.

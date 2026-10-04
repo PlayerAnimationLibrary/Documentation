@@ -56,7 +56,7 @@ Most projects only need `runtime`.
 3. [Expose your own values and functions to MoLang](./gettingstarted/bindings.md)
 4. [Compile hot expressions to bytecode](./features/compiling.md) if interpreting them isn't fast enough
 
-Already using Mocha? Read [Migrating from Mocha](./migration/migrating_from_mocha.md).
+Coming from Mocha or an older mochafloats? Read [Migrating to mochafloats 6](./migration/migrating_from_mocha.md).
 
 ## Credits and license
 
