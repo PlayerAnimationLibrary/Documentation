@@ -1,0 +1,29 @@
+.drop {
+  border: 2px dashed var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  padding: 2.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.drop:hover,
+.dropOver {
+  border-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+.dropTitle {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.dropHint {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.875rem;
+}
+
+.hidden {
+  display: none;
+}
