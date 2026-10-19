@@ -26,5 +26,13 @@ Official documentation for PlayerAnimationLibrary, Emotecraft and other projects
                 linkTitle="View Documentation"
             />
         </div>
+        <div class="col col--6" style={{padding: '10px'}}>
+            <Card
+                title="MochaFloats Documentation"
+                body="Parse, evaluate and compile MoLang in your own Java project."
+                link="/mochafloats/intro"
+                linkTitle="View Documentation"
+            />
+        </div>
     </div>
 </div>

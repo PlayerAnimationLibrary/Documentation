@@ -1,0 +1,87 @@
+.drop {
+  border: 2px dashed var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  padding: 2.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.drop:hover,
+.dropOver {
+  border-color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+.dropTitle {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.field select,
+.field input[type='text'] {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.hint {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.875rem;
+  margin: 0.35rem 0 0;
+}
+
+.field label.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.toggle input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  accent-color: var(--ifm-color-primary);
+}
+
+.summary {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.summary td {
+  border: 0;
+  padding: 0.25rem 0;
+}
+
+.summary td:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.player {
+  width: 100%;
+  margin-bottom: 1rem;
+}

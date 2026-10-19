@@ -63,6 +63,7 @@ const config: Config = {
   
   plugins: [
     './plugins/maven-versions-plugin',
+    './plugins/mochafloats-version-plugin',
     [
       '@docusaurus/plugin-content-docs',
       {
@@ -78,6 +79,15 @@ const config: Config = {
         id: 'pal',
         path: "pal",
         routeBasePath: "pal",
+        sidebarPath: './sidebars.ts',
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'mochafloats',
+        path: "mochafloats",
+        routeBasePath: "mochafloats",
         sidebarPath: './sidebars.ts',
       },
     ],
@@ -116,6 +126,13 @@ const config: Config = {
           label: "Emotecraft Documentation",
         },
         {
+          type: "docSidebar",
+          sidebarId: "mainSidebar",
+          position: "left",
+          docsPluginId: "mochafloats",
+          label: "MochaFloats Documentation",
+        },
+        {
           href: "https://github.com/PlayerAnimationLibrary/Documentation",
           label: "GitHub",
           position: "right",
@@ -135,6 +152,10 @@ const config: Config = {
             {
               to: "/emotecraft/gettingstarted",
               label: "Emotecraft Documentation",
+            },
+            {
+              to: "/mochafloats/intro",
+              label: "MochaFloats Documentation",
             }
           ],
         },
