@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
+import FileDrop from '@site/src/components/FileDrop';
 import styles from './opus-converter.module.css';
 
 // Emotecraft refuses anything past these, so the page never lets you produce one
@@ -75,18 +76,14 @@ export default function OpusConverter(): React.ReactElement {
   const [status, setStatus] = useState('');
   const [failure, setFailure] = useState('');
   const [result, setResult] = useState<Result | null>(null);
-  const [over, setOver] = useState(false);
 
-  const input = useRef<HTMLInputElement>(null);
   const ffmpeg = useRef<any>(null);
 
   useEffect(() => () => {
     if (result) URL.revokeObjectURL(result.url);
   }, [result]);
 
-  async function choose(chosen: File | undefined) {
-    if (!chosen) return;
-
+  async function choose(chosen: File) {
     setReading(true);
     setUnreadable(false);
     setResult(null);
@@ -216,29 +213,12 @@ export default function OpusConverter(): React.ReactElement {
                 <h3>1. Pick your audio</h3>
               </div>
               <div className="card__body">
-                <div
-                  className={over ? `${styles.drop} ${styles.dropOver}` : styles.drop}
-                  onClick={() => input.current?.click()}
-                  onDragOver={(event) => {
-                    event.preventDefault();
-                    setOver(true);
-                  }}
-                  onDragLeave={() => setOver(false)}
-                  onDrop={(event) => {
-                    event.preventDefault();
-                    setOver(false);
-                    choose(event.dataTransfer.files[0]);
-                  }}>
-                  <span className={styles.dropTitle}>Drop a file here, or click to choose</span>
-                  <span className={styles.hint}>MP3, WAV, FLAC, M4A, OGG — whatever you have</span>
-                  <input
-                    ref={input}
-                    className={styles.hidden}
-                    type="file"
-                    accept="audio/*,video/*"
-                    onChange={(event) => choose(event.target.files?.[0])}
-                  />
-                </div>
+                <FileDrop
+                  title="Drop a file here, or click to choose"
+                  hint="MP3, WAV, FLAC, M4A, OGG — whatever you have"
+                  accept="audio/*,video/*"
+                  onFile={choose}
+                />
 
                 {reading && <p className={styles.hint}>Reading the file…</p>}
                 {file && !reading && (

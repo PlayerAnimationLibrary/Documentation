@@ -1,0 +1,40 @@
+.textures {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.texture {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+}
+
+.textureName {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Squares behind the transparent parts of a texture, in whichever colours the theme has */
+.thumb,
+.atlas {
+  image-rendering: pixelated;
+  background: repeating-conic-gradient(var(--ifm-color-emphasis-200) 0% 25%, transparent 0% 50%) 0 0 / 8px 8px;
+}
+
+.thumb {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+}
+
+.atlas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
